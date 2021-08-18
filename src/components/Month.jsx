@@ -1,5 +1,6 @@
 import React from 'react';
 import * as dateFns from 'date-fns';
+import Events from './Events/Events'
 
 class Month extends React.Component {
   state = {
@@ -114,6 +115,7 @@ class Month extends React.Component {
         {this.renderHeader()}
         {this.renderDays()}
         {this.renderCells()}
+        <Events />
       </div>
     );
   }

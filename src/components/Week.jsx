@@ -8,7 +8,7 @@ class Week extends React.Component {
   };
 
   renderHeader() {
-    const dateFormat = "dd MMMM yyyy";
+    const dateFormat = "EEEE MMMM yyyy";
 
     return (
       <div className="header row flex-middle">
