@@ -1,11 +1,20 @@
 import React from 'react';
 import * as dateFns from 'date-fns';
 import Events from './Events/Events'
+import Popup from './Popups/Popup'
+
 
 class Month extends React.Component {
   state = {
     currentMonth: new Date(),
-    selectedDate: new Date()
+    selectedDate: new Date(),
+    show: false
+  }
+
+  showModal = e => {
+    this.setState({
+      show: !this.state.show
+    });
   };
 
   renderHeader() {
@@ -67,14 +76,17 @@ class Month extends React.Component {
         const cloneDay = day;
         days.push(
           <div
-            className={`col cell ${
-              !dateFns.isSameMonth(day, monthStart)
-                ? "disabled"
-                : dateFns.isSameDay(day, selectedDate) ? "selected" : ""
-            }`}
+            className={`col cell ${!dateFns.isSameMonth(day, monthStart)
+              ? "disabled"
+              : dateFns.isSameDay(day, selectedDate) ? "selected" : ""
+              }`}
             key={day}
-            onClick={() => this.onDateClick(dateFns.toDate(cloneDay))}
+            onClick={(e) => {
+              this.onDateClick(dateFns.toDate(cloneDay));
+              this.showModal(e);
+            }}
           >
+          
             <span className="number">{formattedDate}</span>
             <span className="bg">{formattedDate}</span>
           </div>
@@ -90,6 +102,7 @@ class Month extends React.Component {
     }
     return <div className="body">{rows}</div>;
   }
+
 
   onDateClick = day => {
     this.setState({
@@ -115,10 +128,14 @@ class Month extends React.Component {
         {this.renderHeader()}
         {this.renderDays()}
         {this.renderCells()}
-        <Events />
+        <Popup onClose={this.showModal} show={this.state.show}>
+        </Popup>
       </div>
+
     );
   }
 }
+
+
 
 export default Month;

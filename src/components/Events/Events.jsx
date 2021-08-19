@@ -1,10 +1,10 @@
 import React from 'react';
 //import * as dateFns from 'date-fns';
 import moment from 'moment';
-
+import postData from '../../data/eventPosts.json'
 class Events extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             currentMonth: new Date(),
             selectedDate: new Date(),
@@ -19,54 +19,53 @@ class Events extends React.Component {
 
         let allEvents = [];
 
-        let testevent1 = {
-            name: "Someone",
-            title: "Sick Leave",
-            position: "BeckEndDev",
-            date: moment(),
-            dynamic: false,
-            imageUrl: "https:\/\/www.eveliko.com\/images\/default-source\/People\/beni.png?sfvrsn=0"
-        };
+        //let event1 = {
+        //    name: "Someone",
+        //    title: "Sick Leave",
+        //    position: "BeckEndDev",
+        //    date: moment(),
+        //    dynamic: false,
+        //    imageUrl: "https:\/\/www.eveliko.com\/images\/default-source\/People\/beni.png?sfvrsn=0"
+        //};
 
-        let testevent2 = {
-            title: "Event 2",
-            date: moment().startOf("day").subtract(2, "d"),
-            dynamic: false
-        };
+        //let event2 = {
+        //    title: "Event 2",
+        //    date: moment().startOf("day").subtract(2, "d"),
+        //    dynamic: false
+        //};
 
-        allEvents.push(testevent1);
-        allEvents.push(testevent2);
+        //allEvents.push(event1);
+        //allEvents.push(event2);
+        allEvents.push(postData['hits']['hits'])
 
         for (var i = 0; i < allEvents.length; i++) {
             monthEvents.push(allEvents[i]);
         }
-        console.log(monthEvents);
 
         this.setState({
             selectedMonthEvents: monthEvents
         });
-        console.log(this.state.selectedMonthEvents)
     }
 
     render() {
-        const currentSelectedMonth = this.state.currentMonth;
+        const currentSelectedMonth = moment(this.state.currentMonth).format().slice(0, 10);
         const monthEvents = this.state.selectedMonthEvents;
-
         const monthEventsRendered = monthEvents.map((event, i) => {
+            console.log(event[0]['_source']['estimate_title'])
             return (
                 <div
-                    key={event.title}
+                    key={event[0]['_source']['estimate_title']}
                     className="event-container"
                 >
-                    <img src={event.imageUrl} alt="image" />   
-                    <div className="event-title event-attribute">{event.title}</div>
+                    <img alt="image" />   
+                    <div className="event-title event-attribute">{event[0]['_source']['estimate_title']}</div>
                     <div className="event-time event-attribute">
-                        {event.date.format("MMMM Do")}
+                        {event[0]['_source']['Time']}
                     </div>
-                    <h3>{event.name}</h3>
+                    <h3>{event[0]['_source']['Owner']}</h3>
                     <tr>
                         <td><strong>Position:</strong></td>
-                        <td>{event.position}</td>
+                        <td></td>
                     </tr>
                     
                 </div>
@@ -74,11 +73,15 @@ class Events extends React.Component {
         });
 
         const dayEventsRendered = [];
-
+        
         for (var i = 0; i < monthEventsRendered.length; i++) {
-            if (monthEvents[i].date.isSame(currentSelectedMonth, "month")) {
+            const monthDateEvent = monthEvents[i][0]['_source']['Time'].slice(0, 10)
+            console.log(monthEventsRendered.length)
+            //console.log(monthDateEvent)
+            //console.log(currentSelectedMonth)
+            if (moment(monthDateEvent).isSame(currentSelectedMonth, 'day')) {
                 dayEventsRendered.push(monthEventsRendered[i]);
-            }
+            } 
         }
 
         return (

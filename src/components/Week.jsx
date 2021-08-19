@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import * as dateFns from 'date-fns';
 
 class Week extends React.Component {
@@ -8,7 +8,7 @@ class Week extends React.Component {
   };
 
   renderHeader() {
-    const dateFormat = "EEEE MMMM yyyy";
+    const dateFormat = "dd MMMM yyyy";
 
     return (
       <div className="header row flex-middle">
