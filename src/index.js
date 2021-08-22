@@ -10,7 +10,7 @@ ReactDOM.render(
       <App />
     </div>
   </React.StrictMode>,
-  document.getElementById('reactCalendar')
+  document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -5,7 +5,7 @@ class WeekCal extends React.Component {
         super(props);
 
         this.state = {
-            selectedWeek: moment().startOf('week'),
+            selectedWeek: moment(),
             selectedDay: moment().startOf('day'),
             selectedWeekEvents: [],
             showEvents: false
@@ -46,6 +46,7 @@ class WeekCal extends React.Component {
         this.setState({
             selectedWeek: moment()
         });
+        console.log(this.state.selectedWeek)
     }
 
     showCalendar() {
@@ -88,7 +89,7 @@ class WeekCal extends React.Component {
         let weeks = [];
         let previousCurrentNextView = currentWeekView
             .clone()
-            .startOf("week")
+            .startOf("day")
             .subtract(1, "d")
             .day("Monday");
 
@@ -109,11 +110,11 @@ class WeekCal extends React.Component {
         let allEvents = [];
 
         let event = {
-            name: "Someone",
-            title: "Sick Leave",
+            name: "Pavel Donchev",
+            title: "Vacantion",
             position: "BeckEndDev",
             date: moment(),
-            imageUrl: "https:\/\/www.eveliko.com\/images\/default-source\/People\/beni.png?sfvrsn=0"
+            imageUrl: "https:\/\/www.eveliko.com\/images\/systemlibrariesprovider\/sys-profile-images\/pavel_avatar_5bb030f4-4ba9-48e3-945c-103560ba1ab5.jpg?sfvrsn=0"
         };
 
         allEvents.push(event);
