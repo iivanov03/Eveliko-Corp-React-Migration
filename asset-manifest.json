@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/Eveliko-Corp-React-Migration/static/css/main.13b6a41a.chunk.css",
-    "main.js": "/Eveliko-Corp-React-Migration/static/js/main.499d85b2.chunk.js",
-    "main.js.map": "/Eveliko-Corp-React-Migration/static/js/main.499d85b2.chunk.js.map",
+    "main.js": "/Eveliko-Corp-React-Migration/static/js/main.4b75d466.chunk.js",
+    "main.js.map": "/Eveliko-Corp-React-Migration/static/js/main.4b75d466.chunk.js.map",
     "runtime-main.js": "/Eveliko-Corp-React-Migration/static/js/runtime-main.c3bd4946.js",
     "runtime-main.js.map": "/Eveliko-Corp-React-Migration/static/js/runtime-main.c3bd4946.js.map",
     "static/js/2.2d570dd2.chunk.js": "/Eveliko-Corp-React-Migration/static/js/2.2d570dd2.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.c3bd4946.js",
     "static/js/2.2d570dd2.chunk.js",
     "static/css/main.13b6a41a.chunk.css",
-    "static/js/main.499d85b2.chunk.js"
+    "static/js/main.4b75d466.chunk.js"
   ]
 }
