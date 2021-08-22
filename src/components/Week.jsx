@@ -1,122 +1,300 @@
-import React from "react";
-import * as dateFns from 'date-fns';
+import React from 'react';
+import moment from 'moment';
+class WeekCal extends React.Component {
+    constructor(props) {
+        super(props);
 
-class Week extends React.Component {
-  state = {
-    currentWeek: new Date(),
-    selectedDate: new Date()
-  };
+        this.state = {
+            selectedWeek: moment().startOf('week'),
+            selectedDay: moment().startOf('day'),
+            selectedWeekEvents: [],
+            showEvents: false
+        };
 
-  renderHeader() {
-    const dateFormat = "dd MMMM yyyy";
+        this.previous = this.previous.bind(this);
+        this.next = this.next.bind(this);
+        this.showCalendar = this.showCalendar.bind(this);
+        this.goToCurrentWeekView = this.goToCurrentWeekView.bind(this);
 
-    return (
-      <div className="header row flex-middle">
-        <div className="col col-start">
-          <div className="icon" onClick={this.prevWeek}>
-            chevron_left
-          </div>
-        </div>
-        <div className="col col-center">
-          <span>{dateFns.format(this.state.currentWeek, dateFormat)}</span>
-        </div>
-        <div className="col col-end" onClick={this.nextWeek}>
-          <div className="icon">
-            chevron_right
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  renderDays() {
-    const dateFormat = "iiii";
-    const days = [];
-
-    let startDate = dateFns.startOfWeek(this.state.currentWeek, {weekStartsOn: 1});
-
-    for (let i = 0; i < 7; i++) {
-      days.push(
-        <div className="col col-center" key={i}>
-          {dateFns.format(dateFns.addDays(startDate, i), dateFormat)}
-        </div>
-      );
+        this.initialiseEvents();
     }
 
-    return <div className="days row">{days}</div>;
-  }
+    previous() {
+        const currentWeekView = this.state.selectedWeek;
 
-  renderCells() {
-    const { currentWeek, selectedDate } = this.state;
-    const weekStart = dateFns.startOfWeek(currentWeek, {weekStartsOn: 1});
-    const weekEnd = dateFns.endOfWeek(weekStart, {weekStartsOn: 1});
-    //const startDate = dateFns.startOfWeek(monthStart);
-    //const endDate = dateFns.endOfWeek(monthEnd);
+        this.setState({
+            selectedWeek: currentWeekView.subtract(1, "week")
+        });
+    }
 
-    const dateFormat = "d";
-    const rows = [];
- 
-    let days = [];
-    let day = weekStart;
-    let formattedDate = "";
+    next() {
+        const currentWeekView = this.state.selectedWeek;
+        this.setState({
+            selectedWeek: currentWeekView.add(1, "week")
+        });
+    }
 
-    while (day <= weekEnd) {
-      for (let i = 0; i < 7; i++) {
-        formattedDate = dateFns.format(day, dateFormat);
-        const cloneDay = day;
-        days.push(
-          <div
-            className={`col cell ${
-              !dateFns.isSameMonth(day, weekStart)
-                ? "disabled"
-                : dateFns.isSameDay(day, selectedDate) ? "selected" : ""
-            }`}
-            key={day}
-            onClick={() => this.onDateClick(dateFns.toDate(cloneDay))}
-          >
-            <span className="number">{formattedDate}</span>
-            <span className="bg">{formattedDate}</span>
-          </div>
+    select(day) {
+        this.setState({
+            selectedWeek: day.date,
+            selectedDay: day.date.clone(),
+            showEvents: true
+        });
+    }
+
+    goToCurrentWeekView() {
+        this.setState({
+            selectedWeek: moment()
+        });
+    }
+
+    showCalendar() {
+        this.setState({
+            selectedWeek: this.state.selectedWeek,
+            selectedDay: this.state.selectedDay,
+            showEvents: false
+        });
+    }
+
+    renderWeekLabel() {
+        const currentWeekView = this.state.selectedWeek;
+        return (
+            <span className="box month-label">
+                {currentWeekView.format("MMMM YYYY")}
+            </span>
         );
-        day = dateFns.addDays(day, 1);
-      }
-      rows.push(
-        <div className="row" key={day}>
-          {days}
-        </div>
-      );
-      days = [];
     }
-    return <div className="body">{rows}</div>;
-  }
 
-  onDateClick = day => {
-    this.setState({
-      selectedDate: day
-    });
-  };
+    renderDayLabel() {
+        const currentSelectedDay = this.state.selectedDay;
+        return (
+            <span className="box month-label">
+                {currentSelectedDay.format("DD MMMM YYYY")}
+            </span>
+        );
+    }
 
-  nextWeek = () => {
-    this.setState({
-      currentWeek: dateFns.addWeeks(this.state.currentWeek, 1)
-    });
-  };
+    renderTodayLabel() {
+        return (
+            <span className="box today-label" onClick={this.goToCurrentWeekView}>
+                Today
+            </span>
+        );
+    }
 
-  prevWeek = () => {
-    this.setState({
-      currentWeek: dateFns.subWeeks(this.state.currentWeek, 1)
-    });
-  };
+    renderWeeks() {
+        const currentWeekView = this.state.selectedWeek;
 
-  render() {
-    return (
-      <div className="calendar">
-        {this.renderHeader()}
-        {this.renderDays()}
-        {this.renderCells()}
-      </div>
-    );
-  }
+        let weeks = [];
+        let previousCurrentNextView = currentWeekView
+            .clone()
+            .startOf("week")
+            .subtract(1, "d")
+            .day("Monday");
+
+        weeks.push(<Week
+            previousCurrentNextView={previousCurrentNextView.clone()}
+            currentWeekView={this.state.selectedWeek}
+            weekEvents={this.state.selectedWeekEvents}
+            selected={this.state.selectedDay}
+            select={day => this.select(day)}
+        />)
+
+        return weeks;
+    }
+
+    initialiseEvents() {
+        const weekEvents = this.state.selectedWeekEvents;
+
+        let allEvents = [];
+
+        let event = {
+            name: "Someone",
+            title: "Sick Leave",
+            position: "BeckEndDev",
+            date: moment(),
+            imageUrl: "https:\/\/www.eveliko.com\/images\/default-source\/People\/beni.png?sfvrsn=0"
+        };
+
+        allEvents.push(event);
+
+        for (let i = 0; i < allEvents.length; i++) {
+            weekEvents.push(allEvents[i]);
+        }
+
+        this.setState({
+            selectedWeekEvents: weekEvents
+        });
+    }
+
+    render() {
+        const showEvents = this.state.showEvents;
+
+        if (showEvents) {
+            return (
+                <section className="main-calendar">
+                    <header className="calendar-header">
+                        <div className="row title-header">
+                            {this.renderDayLabel()}
+                        </div>
+                        <div className="row button-container">
+                            <div className="icon" onClick={this.showCalendar}>
+                                chevron_left
+                            </div>
+                        </div>
+                    </header>
+                    <Events
+                        selectedWeek={this.state.selectedWeek}
+                        selectedDay={this.state.selectedDay}
+                        selectedWeekEvents={this.state.selectedWeekEvents}
+                    />
+                </section>
+            );
+        } else {
+            return (
+                <section className="main-calendar">
+                    <header className="calendar-header">
+                        <div className="row title-header">
+                            <div className="icon" onClick={this.previous}>
+                                chevron_left
+                            </div>
+                            <div className="box header-text">
+                                {this.renderTodayLabel()}
+                                {this.renderWeekLabel()}
+                            </div>
+                            <div className="icon" onClick={this.next}>
+                                chevron_right
+                            </div>
+                        </div>
+                        <DayNames />
+                    </header>
+                    <div className="days-container">
+                        {this.renderWeeks()}
+                    </div>
+                </section>
+            );
+        }
+    }
 }
 
-export default Week;
+class Events extends React.Component {
+    render() {
+        const currentSelectedDay = this.props.selectedDay;
+        const weekEvents = this.props.selectedWeekEvents;
+
+        const weekEventsRendered = weekEvents.map((event, i) => {
+            return (
+                <div
+                    key={event.title}
+                    className="event-container"
+                >
+                    <div className="card">
+                        <img src={event.imageUrl} alt="image" />
+                        <div className="person-name">
+                            <p>{event.name}</p>
+                        </div>
+                        <div className="leave-reason">
+                            <p>
+                                {event.title}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            );
+        });
+
+        const dayEventsRendered = [];
+
+        for (let i = 0; i < weekEventsRendered.length; i++) {
+            if (weekEvents[i].date.isSame(currentSelectedDay, "day")) {
+                dayEventsRendered.push(weekEventsRendered[i]);
+            }
+        }
+
+        return (
+            <div className="day-events">
+                {dayEventsRendered}
+            </div>
+        );
+    }
+}
+
+class DayNames extends React.Component {
+    render() {
+        return (
+            <div className="row days-header">
+                <span className="box day-name">Mon</span>
+                <span className="box day-name">Tue</span>
+                <span className="box day-name">Wed</span>
+                <span className="box day-name">Thu</span>
+                <span className="box day-name">Fri</span>
+                <span className="box day-name">Sat</span>
+                <span className="box day-name">Sun</span>
+            </div>
+        );
+    }
+}
+
+class Week extends React.Component {
+    render() {
+        let days = [];
+        let date = this.props.previousCurrentNextView;
+        let currentWeekView = this.props.currentWeekView;
+        let selected = this.props.selected;
+        let select = this.props.select;
+        let weekEvents = this.props.weekEvents;
+
+        for (let i = 0; i < 7; i++) {
+            let dayHasEvents = false;
+
+            for (let j = 0; j < weekEvents.length; j++) {
+                if (weekEvents[j].date.isSame(date, "day")) {
+                    dayHasEvents = true;
+                }
+            }
+
+            let day = {
+                name: date.format("dd").substring(0, 1),
+                number: date.date(),
+                isCurrentWeek: date.month() === currentWeekView.month(),
+                isToday: date.isSame(new Date(), "day"),
+                date: date,
+                hasEvents: dayHasEvents
+            };
+
+            days.push(<Day day={day} selected={selected} select={select} />);
+            date = date.clone();
+            date.add(1, "d");
+        }
+        return (
+            <div className="row week">
+                {days}
+            </div>
+        );
+    }
+}
+
+class Day extends React.Component {
+    render() {
+        let day = this.props.day;
+        let selected = this.props.selected;
+        let select = this.props.select;
+
+        return (
+            <div
+                className={
+                    "day" +
+                    (day.isToday ? " today" : "") +
+                    (day.isCurrentWeek ? "" : " different-month") +
+                    (day.date.isSame(selected) ? " selected" : "") +
+                    (day.hasEvents ? " has-events" : "")
+                }
+                onClick={() => select(day)}
+            >
+                <div className="day-number">{day.number}</div>
+            </div>
+        );
+    }
+}
+
+export default WeekCal;

@@ -1,9 +1,9 @@
 import React from "react";
 
-import "./App.css";
+import "./App.scss";
 
-import Month from './components//Month'
-import Week from './components/Week'
+import MonthCal from './components/Month'
+import WeekCal from "./components/Week";
 
 class App extends React.Component {
 
@@ -19,9 +19,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
-        <main>
-          
+      <div className="calendar-content">
             <button
               className="button-month"
               onClick={() => this.setCurrentView(1)}
@@ -33,12 +31,9 @@ class App extends React.Component {
 
             {
               this.state.currentView === 1
-                ? <Month />
-                : <Week />
-            }
-          
-
-        </main>
+                ? <MonthCal />
+                : <WeekCal />
+            } 
       </div>
     );
   }
