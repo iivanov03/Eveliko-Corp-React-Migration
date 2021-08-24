@@ -21,11 +21,11 @@ class App extends React.Component {
     return (
       <div className="calendar-content">
             <button
-              className="button-month"
+              className="button"
               onClick={() => this.setCurrentView(1)}
             >Month</button>
             <button
-              className="button-week"
+              className="button"
               onClick={() => this.setCurrentView(2)}
             >Week</button>
 

@@ -38,7 +38,7 @@ class MonthCal extends React.Component {
         this.setState({
             selectedMonth: day.date,
             selectedDay: day.date.clone(),
-            showEvents: true
+            showEvents:  day.hasEvents === true ? true : false
         });
     }
 
@@ -149,7 +149,7 @@ class MonthCal extends React.Component {
                             {this.renderDayLabel()}
                         </div>
                         <div className="row button-container">
-                            <div className="icon" onClick={this.showCalendar}>
+                            <div className="box icon" onClick={this.showCalendar}>
                                 chevron_left
                             </div>
                         </div>
@@ -166,14 +166,14 @@ class MonthCal extends React.Component {
                 <section className="main-calendar">
                     <header className="calendar-header">
                         <div className="row title-header">
-                            <div className="icon" onClick={this.previous}>
+                            <div className="box icon" onClick={this.previous}>
                                 chevron_left
                             </div>
                             <div className="box header-text">
                                 {this.renderTodayLabel()}
                                 {this.renderMonthLabel()}
                             </div>
-                            <div className="icon" onClick={this.next}>
+                            <div className="box icon" onClick={this.next}>
                                 chevron_right
                             </div>
                         </div>
@@ -261,6 +261,8 @@ class Week extends React.Component {
             for (let j = 0; j < monthEvents.length; j++) {
                 if (monthEvents[j].date.isSame(date, "day")) {
                     dayHasEvents = true;
+                } else {
+                    dayHasEvents = false;
                 }
             }
 

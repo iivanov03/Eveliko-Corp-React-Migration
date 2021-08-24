@@ -38,7 +38,7 @@ class WeekCal extends React.Component {
         this.setState({
             selectedWeek: day.date,
             selectedDay: day.date.clone(),
-            showEvents: true
+            showEvents:  day.hasEvents === true ? true : false
         });
     }
 
@@ -139,7 +139,7 @@ class WeekCal extends React.Component {
                             {this.renderDayLabel()}
                         </div>
                         <div className="row button-container">
-                            <div className="icon" onClick={this.showCalendar}>
+                            <div className="box icon" onClick={this.showCalendar}>
                                 chevron_left
                             </div>
                         </div>
@@ -156,14 +156,14 @@ class WeekCal extends React.Component {
                 <section className="main-calendar">
                     <header className="calendar-header">
                         <div className="row title-header">
-                            <div className="icon" onClick={this.previous}>
+                            <div className="box icon" onClick={this.previous}>
                                 chevron_left
                             </div>
                             <div className="box header-text">
                                 {this.renderTodayLabel()}
                                 {this.renderWeekLabel()}
                             </div>
-                            <div className="icon" onClick={this.next}>
+                            <div className="box icon" onClick={this.next}>
                                 chevron_right
                             </div>
                         </div>
@@ -251,6 +251,8 @@ class Week extends React.Component {
             for (let j = 0; j < weekEvents.length; j++) {
                 if (weekEvents[j].date.isSame(date, "day")) {
                     dayHasEvents = true;
+                } else {
+                    dayHasEvents = false;
                 }
             }
 
