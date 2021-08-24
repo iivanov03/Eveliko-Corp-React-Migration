@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/Eveliko-Corp-React-Migration/static/css/main.ceac3cd2.chunk.css",
-    "main.js": "/Eveliko-Corp-React-Migration/static/js/main.4b75d466.chunk.js",
-    "main.js.map": "/Eveliko-Corp-React-Migration/static/js/main.4b75d466.chunk.js.map",
+    "main.css": "/Eveliko-Corp-React-Migration/static/css/main.01baa1b8.chunk.css",
+    "main.js": "/Eveliko-Corp-React-Migration/static/js/main.fd874cea.chunk.js",
+    "main.js.map": "/Eveliko-Corp-React-Migration/static/js/main.fd874cea.chunk.js.map",
     "runtime-main.js": "/Eveliko-Corp-React-Migration/static/js/runtime-main.c3bd4946.js",
     "runtime-main.js.map": "/Eveliko-Corp-React-Migration/static/js/runtime-main.c3bd4946.js.map",
     "static/js/2.2d570dd2.chunk.js": "/Eveliko-Corp-React-Migration/static/js/2.2d570dd2.chunk.js",
@@ -10,13 +10,13 @@
     "static/js/3.db04e30f.chunk.js": "/Eveliko-Corp-React-Migration/static/js/3.db04e30f.chunk.js",
     "static/js/3.db04e30f.chunk.js.map": "/Eveliko-Corp-React-Migration/static/js/3.db04e30f.chunk.js.map",
     "index.html": "/Eveliko-Corp-React-Migration/index.html",
-    "static/css/main.ceac3cd2.chunk.css.map": "/Eveliko-Corp-React-Migration/static/css/main.ceac3cd2.chunk.css.map",
+    "static/css/main.01baa1b8.chunk.css.map": "/Eveliko-Corp-React-Migration/static/css/main.01baa1b8.chunk.css.map",
     "static/js/2.2d570dd2.chunk.js.LICENSE.txt": "/Eveliko-Corp-React-Migration/static/js/2.2d570dd2.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.c3bd4946.js",
     "static/js/2.2d570dd2.chunk.js",
-    "static/css/main.ceac3cd2.chunk.css",
-    "static/js/main.4b75d466.chunk.js"
+    "static/css/main.01baa1b8.chunk.css",
+    "static/js/main.fd874cea.chunk.js"
   ]
 }
